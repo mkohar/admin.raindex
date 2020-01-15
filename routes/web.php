@@ -18,7 +18,13 @@
 
 Route::group(['middleware' => 'admin'], function() {
    // Dashboard
-   Route::get('/', 'AdminController@dashboard');
+   Route::get('/', 'AdminController@dashboard')->name('dashboard');
+
+   // About Us
+   Route::get('/about-us', 'AboutUsController@index')->name('aboutUs');
+   Route::put('/about-us/update/{id}', 'AboutUsController@updateAbout')->name('aboutUs.update');
+   Route::put('/about-us/update/vission/{id}', 'AboutUsController@updateVission')->name('vission.update');
+   Route::put('/about-us/update/mission/{id}', 'AboutUsController@updateMission')->name('mission.update');
    
 });
 Auth::routes();

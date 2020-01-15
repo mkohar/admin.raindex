@@ -142,7 +142,7 @@
             <div class="ml-3 mr-3">
                <i class="fas fa-mosque"></i>
             </div>
-            <span class="brand-text font-weight-light ">SAHID NURUL IMAN</span>
+            <span class="brand-text font-weight-light ">RAINDEX CREATIVE</span>
          </div>
       </a>
 
@@ -165,10 +165,18 @@
                with font-awesome or any other icon font library -->
             {{-- <li class="nav-item has-treeview menu-open"> --}}
             <li class="nav-item has-treeview">
-               <a href="#" class="nav-link active">
+               <a href="{{ route('dashboard') }}" class="nav-link {{ Request::routeIs('dashboard') ? 'active' : '' }}">
                   <i class="nav-icon fas fa-tachometer-alt"></i>
                   <p>
                      Dashboard
+                  </p>
+               </a>
+            </li>
+            <li class="nav-item has-treeview">
+               <a href="{{ route('aboutUs') }}" class="nav-link {{ Request::routeIs('aboutUs') ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-users"></i>
+                  <p>
+                     About Us
                   </p>
                </a>
             </li>
