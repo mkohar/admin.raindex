@@ -188,6 +188,15 @@
                   </p>
                </a>
             </li>
+            <hr>
+            <li class="nav-item has-treeview">
+               <a href="{{ route('project') }}" class="nav-link {{ Request::routeIs('project*') ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-users"></i>
+                  <p>
+                     Project
+                  </p>
+               </a>
+            </li>
             
             <li class="nav-item mt-2">
                <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

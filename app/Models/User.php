@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -41,5 +41,10 @@ class User extends Authenticatable
    {
       if ($this->role == 1) return true;
       return false;
+   }
+
+   public function projects()
+   {
+      return $this->belongsToMany('App\Models\Project');
    }
 }
