@@ -21,11 +21,14 @@ Route::group(['middleware' => 'admin'], function() {
    Route::get('/', 'AdminController@dashboard')->name('dashboard');
 
    // About Us
-   Route::get('/about-us', 'AboutUsController@index')->name('aboutUs');
-   Route::put('/about-us/update/{id}', 'AboutUsController@updateAbout')->name('aboutUs.update');
-   Route::put('/about-us/update/vission/{id}', 'AboutUsController@updateVission')->name('vission.update');
-   Route::put('/about-us/update/mission/{id}', 'AboutUsController@updateMission')->name('mission.update');
-   
+   Route::get('/about-us', 'Profile\AboutUsController@index')->name('aboutUs');
+   Route::put('/about-us/update/{id}', 'Profile\AboutUsController@updateAbout')->name('aboutUs.update');
+   Route::put('/about-us/update/vission/{id}', 'Profile\AboutUsController@updateVission')->name('vission.update');
+   Route::put('/about-us/update/mission/{id}', 'Profile\AboutUsController@updateMission')->name('mission.update');
+
+   // Portfolio
+   Route::get('/portfolio', 'Profile\PortfolioController@index')->name('portfolio');
+   Route::post('/portfolio/store', 'Profile\PortfolioController@store')->name('portfolio.store');
 });
 Auth::routes();
 
