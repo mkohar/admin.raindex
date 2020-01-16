@@ -62,7 +62,6 @@
                               @foreach ($project->users as $user)
                                  <b class="d-block">{{ $user->name }}</b>
                               @endforeach
-                              <discussioan-userlist></discussioan-userlist>
                            </p>
                            <p class="text-sm mt-4">Notes
                               <b class="d-block">
@@ -108,9 +107,11 @@
                                        @php
                                           $urlGet = route('project.single.discussion', ['id'=>$project->id ]);
                                           $urlPost = route('project.single.discussion.post', ['id'=>$project->id ]);
+                                          // $urlGetUsers = route('project.single.users', ['id'=>$project->id ]);
                                        @endphp
                                        <discussioan-box :url="{{ json_encode($urlGet) }}"></discussioan-box>
                                        <discussioan-form :url="{{ json_encode($urlPost) }}"></discussioan-form>
+                                       <discussioan-userlist></discussioan-userlist>
 
                                        {{-- <example-component></example-component> --}}
 

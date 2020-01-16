@@ -37,6 +37,8 @@
          Bus.$on('chat.sent', (newChat) => {
             this.discussions.push(newChat)
             this.scrollToBottom()
+         }).$on('chat.removed', (newChat) => {
+            this.removeChat(newChat.id)
          })
       }, 
 
@@ -56,6 +58,12 @@
             setTimeout(function() {
                let discussionArea = document.getElementsByClassName('discussion-area')[0]
                discussionArea.scrollTop = discussionArea.scrollHeight
+            })
+         },
+
+         removeChat:function(id){
+            this.discussions = this.discussions.filter((newChat) => {
+               return newChat.id !== id
             })
          }
 

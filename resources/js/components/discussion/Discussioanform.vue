@@ -37,17 +37,28 @@
             }
 
             let newChat = {
+               id: Date.now(),
                subject: this.body.trim(),
                created_at: Moment().utc(0).format('YYYY-MM-DD HH:mm:ss'),
-               // created_at: 'YYYY-MM-DD HH:mm:ss',
                user: {
                   name: Laravel.user.name
                }
             }
 
-            axios.post(this.url, {subject: this.body.trim()}).then(response => {
-               Bus.$emit('chat.sent', newChat)
-               this.body = ''
+            let backupText = this.body.trim()
+            Bus.$emit('chat.sent', newChat)
+            this.body = ''
+
+            axios.post(this.url, {subject: backupText})
+            .then(response => {
+               // First Code
+               // Bus.$emit('chat.sent', newChat)
+               // this.body = ''
+            })
+            .catch(() => {
+               this.body = backupText
+               Bus.$emit('chat.removed', newChat)
+               console.log('error!!')
             })
          }
       }
