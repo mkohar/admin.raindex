@@ -29,6 +29,14 @@ Route::group(['middleware' => 'admin'], function() {
    // Portfolio
    Route::get('/portfolio', 'Profile\PortfolioController@index')->name('portfolio');
    Route::post('/portfolio/store', 'Profile\PortfolioController@store')->name('portfolio.store');
+
+   // Project
+   Route::get('/project', 'Project\ProjectController@index')->name('project');
+   Route::post('/project/store', 'Project\ProjectController@store')->name('project.store');
+   Route::get('/project/{id}', 'Project\ProjectController@single')->name('project.single');
+   Route::get('/project/{id}/discussion', 'Project\DiscussionController@getDiscussion')->name('project.single.discussion');
+   Route::post('/project/{id}/discussion', 'Project\DiscussionController@postDiscussion')->name('project.single.discussion.post');
+   Route::get('/project/{id}/users', 'Project\UserController@getUser')->name('project.single.users');
 });
 Auth::routes();
 

@@ -5,22 +5,43 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta http-equiv="x-ua-compatible" content="ie=edge">
 
+   <!-- CSRF Token -->
+   <meta name="csrf-token" content="{{ csrf_token() }}">
+
+ 
    @yield('title')
-   
+   <!-- Scripts -->
+   <script src="{{ asset('js/app.js') }}" defer></script>
+
+   <!-- Styles -->
+   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+   <script>
+      window.Laravel = {!! json_encode([
+         'user' => [
+            'name' => auth()->check() ? auth()->user()->name : null
+         ]
+      ]) !!};
+   </script>
+
+
+
+
    <!-- Font Awesome Icons -->
    <link rel="stylesheet" href="{{ asset('/vendor/plugins/fontawesome-free/css/all.min.css') }}">
    <!-- overlayScrollbars -->
-   <link rel="stylesheet" href="{{ asset('/vendor/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">  
+   {{-- <link rel="stylesheet" href="{{ asset('/vendor/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">   --}}
    <!-- Theme style -->
    <link rel="stylesheet" href="{{ asset('/vendor/dist/css/adminlte.min.css') }}">
    <!-- Google Font: Source Sans Pro -->
    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
    <!-- page CSS -->
    @yield('css')
    
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
+<body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Raleway', sans-serif;">
+<div class="wrapper" id="app">
 
    <!-- Navbar -->
    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -188,6 +209,15 @@
                   </p>
                </a>
             </li>
+            <hr>
+            <li class="nav-item has-treeview">
+               <a href="{{ route('project') }}" class="nav-link {{ Request::routeIs('project*') ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-users"></i>
+                  <p>
+                     Project
+                  </p>
+               </a>
+            </li>
             
             <li class="nav-item mt-2">
                <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -206,7 +236,10 @@
    </aside>
 
    <!-- Content Wrapper. Contains page content -->
-   @yield('content')
+   <div >
+
+      @yield('content')
+   </div>
    <!-- /.content-wrapper -->
 
    <!-- Control Sidebar -->
@@ -233,13 +266,13 @@
 
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
-<script src="{{ asset('/vendor/plugins/jquery/jquery.min.js') }}"></script>
+{{-- <script src="{{ asset('/vendor/plugins/jquery/jquery.min.js') }}"></script> --}}
 <!-- Bootstrap 4 -->
-<script src="{{ asset('/vendor/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+{{-- <script src="{{ asset('/vendor/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}
 <!-- overlayScrollbars -->
-<script src="{{ asset('/vendor/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+{{-- <script src="{{ asset('/vendor/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script> --}}
 <!-- AdminLTE App -->
-<script src="{{ asset('/vendor/dist/js/adminlte.min.js') }}"></script>
+{{-- <script src="{{ asset('/vendor/dist/js/adminlte.min.js') }}"></script> --}}
 <!-- page script -->
 @yield('js')
 
