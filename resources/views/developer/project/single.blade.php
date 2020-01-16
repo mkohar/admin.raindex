@@ -111,17 +111,7 @@
                                        @endphp
                                        <discussioan-box :url="{{ json_encode($urlGet) }}"></discussioan-box>
                                        <discussioan-form :url="{{ json_encode($urlPost) }}"></discussioan-form>
-                                       <discussioan-userlist></discussioan-userlist>
-
-                                       {{-- <example-component></example-component> --}}
-
-                                       {{-- <discussioan-userlist>
-
-                                       </discussioan-userlist> --}}
-
-                                       {{-- ============================== --}}
-                                       
-                                       
+                                       <discussioan-userlist></discussioan-userlist>                                    
                                        
                                     </div>
                                  </div>
@@ -205,6 +195,8 @@
 @endsection
 
 @section('js')
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}" defer></script>
 <!-- SweetAlert2 -->
 <script src="{{ asset('/vendor/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <!-- DataTables -->

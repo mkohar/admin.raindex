@@ -172,6 +172,15 @@
 @endsection
 
 @section('js')
+<!-- jQuery -->
+<script src="{{ asset('/vendor/plugins/jquery/jquery.min.js') }}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ asset('/vendor/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- overlayScrollbars -->
+<script src="{{ asset('/vendor/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
+<!-- AdminLTE App -->
+<script src="{{ asset('/vendor/dist/js/adminlte.min.js') }}"></script>
+<!-- page script -->
 <!-- Summernote -->
 <script src="{{ asset('/vendor/plugins/summernote/summernote-bs4.min.js') }}"></script>
 <!-- SweetAlert2 -->
