@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Project;
 use App\Models\User;
+use App\Models\Project;
 
 class ProjectController extends Controller
 {
@@ -42,4 +42,6 @@ class ProjectController extends Controller
       $project = Project::find($id);
       return view('developer.project.single', compact('project'));
    }
+
+   
 }

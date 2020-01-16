@@ -47,4 +47,9 @@ class User extends Authenticatable
    {
       return $this->belongsToMany('App\Models\Project');
    }
+
+   public function discussions()
+   {
+      return $this->hasMany('App\Models\Discussion');
+   }
 }

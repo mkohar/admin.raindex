@@ -38,6 +38,8 @@
 
    <!-- Main content -->
    <div class="content">
+                                             
+
       <div class="container-fluid">
          <div class="row">
             <div class="col-12">
@@ -60,9 +62,15 @@
                               @foreach ($project->users as $user)
                                  <b class="d-block">{{ $user->name }}</b>
                               @endforeach
+                              <discussioan-userlist></discussioan-userlist>
                            </p>
                            <p class="text-sm mt-4">Notes
-                              <b class="d-block">-</b>
+                              <b class="d-block">
+                                 Website yang sudah ada : <a href="http://prod.tdm.co.id/">prod.tdm.co.id</a>
+                              </b>
+                              <b class="d-block">
+                                 perencanaan fitur ada <a href="#">disini</a>.
+                              </b>
                            </p>
                         </div>
                         <div class="col-md-8">
@@ -71,15 +79,15 @@
                                  <div class="info-box bg-light">
                                     <div class="info-box-content">
                                        <span class="info-box-text text-center text-muted">Estimated budget</span>
-                                       <span class="info-box-number text-center text-muted mb-0">Rp.400.000.000,-</span>
+                                       <span class="info-box-number text-center text-muted mb-0">Rp10.000.000,00</span>
                                     </div>
                                  </div>
                               </div>
                               <div class="col-md-4 col-sm-6">
                                  <div class="info-box bg-light">
                                     <div class="info-box-content">
-                                       <span class="info-box-text text-center text-muted">Deadline</span>
-                                       <span class="info-box-number text-center text-muted mb-0">17 Agustus 2020</span>
+                                       <span class="info-box-text text-center text-muted">Satus</span>
+                                       <span class="info-box-number text-center text-muted mb-0">Plan</span>
                                     </div>
                                  </div>
                               </div>
@@ -97,37 +105,22 @@
                                  <h4>Discussion</h4>
                                  <div class="card">
                                     <div class="card-body">
-                                       <div class="mt-2">
-                                          <span class="username">
-                                             <strong><a href="#">Mohammad Kohar</a></strong>
-                                          </span>
-                                          <small> - 7:45 PM today</small>
-                                          <p>
-                                             Eh ini di navbar isinya apa aja?
-                                          </p>
-                                       </div>
-                                       <div class="mt-2">
-                                          <span class="username">
-                                             <strong><a href="#">Saeful Rahman</a></strong>
-                                          </span>
-                                          <small> - 7:49 PM today</small>
-                                          <p>
-                                             Menurut gw sih isinya Home, About Us, Contact, Follow Me.
-                                          </p>
-                                       </div>
-                                       <div class="mt-2">
-                                          <span class="username">
-                                             <strong><a href="#">Hamdan Abdoel</a></strong>
-                                          </span>
-                                          <small> - 7:52 PM today</small>
-                                          <p>
-                                             Iya tuh bener kata epul
-                                          </p>
-                                       </div>
-                                       <div class="form-group mt-2">
-                                          <label for="exampleFormControlTextarea1">Tipe Discussion Here!</label>
-                                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                       </div>
+                                       @php
+                                          $urlGet = route('project.single.discussion', ['id'=>$project->id ]);
+                                          $urlPost = route('project.single.discussion.post', ['id'=>$project->id ]);
+                                       @endphp
+                                       <discussioan-box :url="{{ json_encode($urlGet) }}"></discussioan-box>
+                                       <discussioan-form :url="{{ json_encode($urlPost) }}"></discussioan-form>
+
+                                       {{-- <example-component></example-component> --}}
+
+                                       {{-- <discussioan-userlist>
+
+                                       </discussioan-userlist> --}}
+
+                                       {{-- ============================== --}}
+                                       
+                                       
                                        
                                     </div>
                                  </div>
@@ -214,19 +207,19 @@
 <!-- SweetAlert2 -->
 <script src="{{ asset('/vendor/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <!-- DataTables -->
-<script src="{{ asset('/vendor/plugins/datatables/jquery.dataTables.js') }}"></script>
-<script src="{{ asset('/vendor/plugins/datatables-bs4/js/dataTables.bootstrap4.js') }}"></script>
+{{-- <script src="{{ asset('/vendor/plugins/datatables/jquery.dataTables.js') }}"></script> --}}
+{{-- <script src="{{ asset('/vendor/plugins/datatables-bs4/js/dataTables.bootstrap4.js') }}"></script> --}}
 <!-- Select2 -->
-<script src="{{ asset('/vendor/plugins/select2/js/select2.full.min.js') }}"></script>
+{{-- <script src="{{ asset('/vendor/plugins/select2/js/select2.full.min.js') }}"></script> --}}
 
 <script>
    // Select2
-   $('.select2').select2()
-   $(function () {
+   // $('.select2').select2()
+   // $(function () {
       
 
       // Data Tabel
-      $("#table").DataTable();
+      // $("#table").DataTable();
 
       // Alert
       @if (session('success'))
@@ -251,6 +244,6 @@
       //    }
       //    $(this).next('.custom-file-label').html(fileName);
       // })
-   })
+   // })
 </script>
 @endsection
