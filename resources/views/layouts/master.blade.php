@@ -34,12 +34,12 @@
    <link rel="stylesheet" href="{{ asset('/vendor/dist/css/adminlte.min.css') }}">
    <!-- Google Font: Source Sans Pro -->
    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-   <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
    <!-- page CSS -->
    @yield('css')
    
 </head>
-<body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Raleway', sans-serif;">
+<body class="hold-transition sidebar-mini layout-fixed" style="font-family: 'Montserrat', sans-serif; font-size:12px">
 <div class="wrapper" id="app">
 
    <!-- Navbar -->
@@ -156,12 +156,12 @@
    <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="#" class="brand-link">
-         {{-- <img src="{{ asset('/AdminLTE/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
+         {{-- <img src="{{ asset('/logo/raindexcreative.png') }}" alt="Raindex Creative Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
          <div class="row">
 
-            <div class="ml-3 mr-3">
+            {{-- <div class="ml-3 mr-3">
                <i class="fas fa-mosque"></i>
-            </div>
+            </div> --}}
             <span class="brand-text font-weight-light ">RAINDEX CREATIVE</span>
          </div>
       </a>

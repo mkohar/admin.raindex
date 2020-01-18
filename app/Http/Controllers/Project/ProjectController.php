@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\User;
+use App\Models\Status;
 use App\Models\Project;
 
 class ProjectController extends Controller
@@ -40,7 +41,37 @@ class ProjectController extends Controller
    public function single($id)
    {
       $project = Project::find($id);
-      return view('developer.project.single', compact('project'));
+      $statuses = Status::all();
+      $status = $project->statuses->last();
+
+      return view('developer.project.single', compact('project', 'statuses', 'status'));
+   }
+
+   public function updateBudget($id, Request $request)
+   {
+      $project = Project::find($id);
+      $project->budget = $request->budget;
+      $project->save();
+
+      return redirect()->back();
+   }
+
+   public function updateStatus($id, Request $request)
+   {
+      $project = Project::find($id);
+      $status = Status::find($request->status_id);
+      $project->statuses()->save($status);
+
+      return redirect()->back();
+   }
+
+   public function updateDeadline($id, Request $request)
+   {
+      $project = Project::find($id);
+      $project->deadline = $request->deadline;
+      $project->save();
+
+      return redirect()->back();
    }
 
    

@@ -11,6 +11,11 @@ class Project extends Model
       return $this->belongsToMany('App\Models\User');
    }
 
+   public function statuses()
+   {
+      return $this->belongsToMany('App\Models\Status');
+   }
+
    public function client()
    {
       return $this->belongsTo('App\Models\Client');

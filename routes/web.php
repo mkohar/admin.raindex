@@ -34,6 +34,9 @@ Route::group(['middleware' => 'admin'], function() {
    Route::get('/project', 'Project\ProjectController@index')->name('project');
    Route::post('/project/store', 'Project\ProjectController@store')->name('project.store');
    Route::get('/project/{id}', 'Project\ProjectController@single')->name('project.single');
+   Route::get('/project/{id}/update/budget', 'Project\ProjectController@updateBudget')->name('project.update.budget');
+   Route::get('/project/{id}/update/status', 'Project\ProjectController@updateStatus')->name('project.update.status');
+   Route::get('/project/{id}/update/deadline', 'Project\ProjectController@updateDeadline')->name('project.update.deadline');
    Route::get('/project/{id}/discussion', 'Project\DiscussionController@getDiscussion')->name('project.single.discussion');
    Route::post('/project/{id}/discussion', 'Project\DiscussionController@postDiscussion')->name('project.single.discussion.post');
    Route::get('/project/{id}/users', 'Project\UserController@getUser')->name('project.single.users');

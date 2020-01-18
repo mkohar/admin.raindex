@@ -7,11 +7,20 @@
 @section('css')
 <!-- SweetAlert2 -->
 <link rel="stylesheet" href="{{ asset('/vendor/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-<!-- DataTables -->
-<link rel="stylesheet" href="{{ asset('/vendor/plugins/datatables-bs4/css/dataTables.bootstrap4.css') }}">
-<!-- Select2 -->
-<link rel="stylesheet" href="{{ asset('/vendor/plugins/select2/css/select2.min.css') }}">
-<link rel="stylesheet" href="{{ asset('/vendor/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
+<!-- summernote -->
+<link rel="stylesheet" href="{{ asset('/vendor/plugins/summernote/summernote-bs4.css') }}">
+
+<style>
+.widget{
+   cursor:pointer;
+   -webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
+</style>
 @endsection
 
 @section('content')
@@ -38,8 +47,6 @@
 
    <!-- Main content -->
    <div class="content">
-                                             
-
       <div class="container-fluid">
          <div class="row">
             <div class="col-12">
@@ -55,15 +62,15 @@
                         <div class="col-md-4">
                            <h3 class="text-primary"><i class="fas fa-paint-brush"></i> {{ $project->title }}</h3>
                            <p class="text-muted">{{ $project->detail }}</p>
-                           <p class="text-sm mt-4">Client
+                           <p class="text-sm mt-4">Client <button  class="btn btn-link"><i class="far fa-edit"></i></button>
                               <b class="d-block">{{ $project->client->name }}</b>
                            </p>
-                           <p class="text-sm mt-2">Team
+                           <p class="text-sm mt-2">Team <button  class="btn btn-link"><i class="far fa-edit"></i></button>
                               @foreach ($project->users as $user)
                                  <b class="d-block">{{ $user->name }}</b>
                               @endforeach
                            </p>
-                           <p class="text-sm mt-4">Notes
+                           <p class="text-sm mt-4">Notes <button  class="btn btn-link"><i class="far fa-edit"></i></button>
                               <b class="d-block">
                                  Website yang sudah ada : <a href="http://prod.tdm.co.id/">prod.tdm.co.id</a>
                               </b>
@@ -74,27 +81,33 @@
                         </div>
                         <div class="col-md-8">
                            <div class="row">
-                              <div class="col-md-4 col-sm-6">
-                                 <div class="info-box bg-light">
+                              <div class="col-md-4 col-sm-6" onclick="btnBudgetClick()"> 
+                                 <div class="info-box bg-light widget">
                                     <div class="info-box-content">
                                        <span class="info-box-text text-center text-muted">Estimated budget</span>
-                                       <span class="info-box-number text-center text-muted mb-0">Rp10.000.000,00</span>
+                                       <span class="info-box-number text-center text-muted mb-0">
+                                          {{ $project->budget ? number_format($project->budget) : '-' }}
+                                       </span>
                                     </div>
                                  </div>
                               </div>
-                              <div class="col-md-4 col-sm-6">
-                                 <div class="info-box bg-light">
+                              <div class="col-md-4 col-sm-6" onclick="btnStatusClick()"> 
+                                 <div class="info-box bg-light widget">
                                     <div class="info-box-content">
                                        <span class="info-box-text text-center text-muted">Satus</span>
-                                       <span class="info-box-number text-center text-muted mb-0">Plan</span>
+                                       <span class="info-box-number text-center text-muted mb-0">
+                                          {{ $status != null ? $status->name : '-' }}
+                                       </span>
                                     </div>
                                  </div>
                               </div>
-                              <div class="col-md-4 col-sm-6">
-                                 <div class="info-box bg-light">
+                              <div class="col-md-4 col-sm-6" onclick="btnDeadlineClick()">
+                                 <div class="info-box bg-light widget">
                                     <div class="info-box-content">
                                        <span class="info-box-text text-center text-muted">Deadline</span>
-                                       <span class="info-box-number text-center text-muted mb-0">17 Agustus 2020</span>
+                                       <span class="info-box-number text-center text-muted mb-0">
+                                          {{ $project->deadline ? $project->deadline : '-' }}
+                                       </span>
                                     </div>
                                  </div>
                               </div>
@@ -112,6 +125,7 @@
                                        <discussioan-box :url="{{ json_encode($urlGet) }}"></discussioan-box>
                                        <discussioan-form :url="{{ json_encode($urlPost) }}"></discussioan-form>
                                        <discussioan-userlist></discussioan-userlist>                                    
+                                       <textarea class="teaxarea" name="" id="" cols="30" rows="10"></textarea>
                                        
                                     </div>
                                  </div>
@@ -127,70 +141,89 @@
    </div>
 </div>
 
-<!-- Modal About -->
-<div class="modal fade" id="modalNewProject" tabindex="-1" role="dialog" aria-labelledby="modalNewProjectLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg" role="document">
-   <div class="modal-content modal-lg">
-      <form action="{{ route('project.store') }}" method="POST" enctype="multipart/form-data">
-         @csrf
-         <div class="modal-header">
-            <h5 class="modal-title" id="modalNewProjectLabel">New Project</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <div class="modal-body">
-            <div class="form-group">
-               <label for="title">Title</label>
-               <input type="text" name="title" class="form-control" id="title" placeholder="Project Title">
+<!-- Modal Budget -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modalBudget">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <form action="{{ route('project.update.budget', ['id'=>$project->id]) }}">
+            <div class="modal-header">
+               <h5 class="modal-title">Estimated budget</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
             </div>
-            <div class="form-group">
-               <label for="client">Client</label>
-               <div class="row">
-                  <div class="col-md-8">
-                     <select name="client_id" class="custom-select" id="client">
-                        <option selected disabled>- Select Category -</option>
-                        @foreach (ClientHelp::get_clients() as $client)
-                           <option value="{{ $client->id }}">{{ $client->name }}</option>
-                        @endforeach
-                     </select>
-                  </div>
-                  <div class="col-md-4">
-                     <button class="btn btn-sm btn-primary btn-block">New Client</button>
-                  </div>
+            <div class="modal-body">
+               <div class="input-group">
+                  {{-- <label for="exampleInputPassword1">Password</label> --}}
+                  <div class="input-group-prepend">
+                     <div class="input-group-text">Rp</div>
+                   </div>
+                  <input type="text" name="budget" class="form-control" value="{{ $project->budget }}">
                </div>
-               
             </div>
-            <div class="form-group">
-               <label for="category">Category</label>
-               <select name="category" class="custom-select" id="category">
-                  <option selected disabled>- Select Category -</option>
-                  <option value="Website">Website</option>
-                  <option value="Mobile">Mobile</option>
-                  <option value="Desktop">Desktop</option>
-               </select>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
             </div>
-            <div class="form-group">
-               <label for="description">Description</label>
-               <textarea class="form-control" name="description" placeholder="Project Description" id="description"></textarea>
-            </div>
-            <div class="form-group">
-               <label for="description">Team</label>
-               <select name="user_id[]" class="custom-select" id="client" multiple>
-                  @foreach (UserHelp::get_users() as $user)
-                     <option value="{{ $user->id }}">{{ $user->name }}</option>
-                  @endforeach
-               </select>
-            </div>
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-sm btn-primary">Save changes</button>
-         </div>
-      </form>
+         </form>
+      </div>
    </div>
+ </div>
+
+<!-- Modal Status -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modalStatus">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <form action="{{ route('project.update.status', ['id'=>$project->id]) }}">
+            <div class="modal-header">
+               <h5 class="modal-title">Project Status</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+                  <select class="custom-select mr-sm-2" name="status_id">
+                     <option disabled>Choose...</option>
+                     @foreach ($statuses as $item)
+                        <option value="{{ $item->id }}" {{ $status->id == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>    
+                     @endforeach
+                  </select>
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+            </div>
+         </form>
+      </div>
    </div>
-</div>
+ </div>
+
+<!-- Modal Deadline -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modalDeadline">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <form action="{{ route('project.update.deadline', ['id'=>$project->id]) }}">
+            <div class="modal-header">
+               <h5 class="modal-title">Project Deadline</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+               <div class="form-group">
+                  <input type="date" name="deadline" class="form-control" value="{{ $project->deadline }}">
+               </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+            </div>
+         </form>
+      </div>
+   </div>
+ </div>
 
 @endsection
 
@@ -199,44 +232,54 @@
 <script src="{{ asset('js/app.js') }}" defer></script>
 <!-- SweetAlert2 -->
 <script src="{{ asset('/vendor/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-<!-- DataTables -->
-{{-- <script src="{{ asset('/vendor/plugins/datatables/jquery.dataTables.js') }}"></script> --}}
-{{-- <script src="{{ asset('/vendor/plugins/datatables-bs4/js/dataTables.bootstrap4.js') }}"></script> --}}
-<!-- Select2 -->
-{{-- <script src="{{ asset('/vendor/plugins/select2/js/select2.full.min.js') }}"></script> --}}
+<!-- Summernote -->
+<script src="{{ asset('/vendor/plugins/summernote/summernote-bs4.min.js') }}"></script>
 
 <script>
-   // Select2
-   // $('.select2').select2()
-   // $(function () {
-      
+   @if (session('success'))
+      var message = "{{ session('success') }}";
+      const Toast = Swal.mixin({
+         toast: true,
+         position: 'top',
+         showConfirmButton: false,
+         timer: 5000
+      });
+      Toast.fire({
+         type: 'success',
+         title: message
+      })
+   @endif
 
-      // Data Tabel
-      // $("#table").DataTable();
+   function btnBudgetClick() { 
+      $('#modalBudget').modal('show')
+   } 
+   function btnStatusClick() { 
+      $('#modalStatus').modal('show')
+   } 
+   function btnDeadlineClick() { 
+      $('#modalDeadline').modal('show')
+   } 
 
-      // Alert
-      @if (session('success'))
-         var message = "{{ session('success') }}";
-         const Toast = Swal.mixin({
-            toast: true,
-            position: 'top',
-            showConfirmButton: false,
-            timer: 5000
-         });
-         Toast.fire({
-            type: 'success',
-            title: message
-         })
-      @endif
-
-      // File label form infut
-      // $('#images').on('change',function(){
-      //    var fileName = $(this).val();
-      //    if (fileName.length > 1) {
-      //       fileName = $(this).val().length + " image selected."
-      //    }
-      //    $(this).next('.custom-file-label').html(fileName);
-      // })
-   // })
+   $(function () {
+      // Summernote
+      $('.teaxarea').summernote({
+         placeholder: 'Ketik buletin disini...',
+         tabsize: 2,
+         height: 300,
+         toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['fontname', ['fontname']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['table', ['table']],
+            // ['insert', ['link', 'picture', 'hr']],
+            ['insert', ['link', 'hr']],
+            ['view', ['fullscreen', 'codeview']],
+            ['help', ['help']]
+         ],
+      })
+   })
 </script>
 @endsection
